@@ -63,7 +63,6 @@ extern "C" {
  *****************************************************************************/
 //#error "Trace Recorder: Please include your processor's header file here and remove this line."
 #include "stm32f4xx.h"
-
 /*******************************************************************************
  * Configuration Macro: TRC_CFG_HARDWARE_PORT
  *
@@ -98,7 +97,7 @@ extern "C" {
  * TRC_RECORDER_MODE_SNAPSHOT
  * TRC_RECORDER_MODE_STREAMING
  ******************************************************************************/
-#define TRC_CFG_RECORDER_MODE TRC_RECORDER_MODE_SNAPSHOT
+#define TRC_CFG_RECORDER_MODE TRC_RECORDER_MODE_STREAMING
 
 /*******************************************************************************
  * Configuration Macro: TRC_CFG_RECORDER_BUFFER_ALLOCATION

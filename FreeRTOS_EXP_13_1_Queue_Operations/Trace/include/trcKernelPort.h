@@ -52,7 +52,7 @@
 extern "C" {
 #endif
 
-#define TRC_USE_TRACEALYZER_RECORDER 1
+#define TRC_USE_TRACEALYZER_RECORDER configUSE_TRACE_FACILITY
 
 /*** FreeRTOS version codes **************************************************/
 #define FREERTOS_VERSION_NOT_SET				0

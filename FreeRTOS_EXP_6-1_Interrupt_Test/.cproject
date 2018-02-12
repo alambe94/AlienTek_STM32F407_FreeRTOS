@@ -50,6 +50,7 @@
 									<listOptionValue builtIn="false" value="../USER"/>
 									<listOptionValue builtIn="false" value="../HARDWARE/LCD"/>
 									<listOptionValue builtIn="false" value="../HARDWARE/TIMER"/>
+									<listOptionValue builtIn="false" value="../Trace/streamports/Jlink_RTT/include"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.841052773" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.952592810" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F407VG" valueType="enumerated"/>
@@ -106,25 +107,6 @@
 							</tool>
 							<tool id="com.atollic.truestudio.ar.base.585094976" name="Archiver" superClass="com.atollic.truestudio.ar.base"/>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.secoutput.1644916118" name="Other" superClass="com.atollic.truestudio.exe.debug.toolchain.secoutput"/>
-						</toolChain>
-					</folderInfo>
-					<folderInfo id="com.atollic.truestudio.exe.debug.1391513723.1995817987" name="/" resourcePath="Trace">
-						<toolChain id="com.atollic.truestudio.exe.debug.toolchain.1343629900" name="Atollic ARM Tools" superClass="com.atollic.truestudio.exe.debug.toolchain" unusedChildren="">
-							<option id="com.atollic.truestudio.general.runtimelib.624674628.1552414844" name="Runtime Library" superClass="com.atollic.truestudio.general.runtimelib.624674628"/>
-							<option id="com.atollic.truestudio.toolchain_options.mcu.1681437516.1420348475" name="Microcontroller" superClass="com.atollic.truestudio.toolchain_options.mcu.1681437516"/>
-							<option id="com.atollic.truestudio.toolchain_options.vendor.793738766.957756970" name="Vendor name" superClass="com.atollic.truestudio.toolchain_options.vendor.793738766"/>
-							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.atollic.truestudio.exe.debug.toolchain.platform" isAbstract="false" name="Debug platform" osList="all" superClass="com.atollic.truestudio.exe.debug.toolchain.platform"/>
-							<tool id="com.atollic.truestudio.exe.debug.toolchain.as.1710305081" name="Assembler" superClass="com.atollic.truestudio.exe.debug.toolchain.as.49415117">
-								<inputType id="com.atollic.truestudio.as.input.1092851412" name="Input" superClass="com.atollic.truestudio.as.input"/>
-							</tool>
-							<tool id="com.atollic.truestudio.exe.debug.toolchain.gcc.576257396" name="C Compiler" superClass="com.atollic.truestudio.exe.debug.toolchain.gcc.987963463">
-								<inputType id="com.atollic.truestudio.gcc.input.649531356" superClass="com.atollic.truestudio.gcc.input"/>
-							</tool>
-							<tool id="com.atollic.truestudio.exe.debug.toolchain.ld.1275361733" name="C Linker" superClass="com.atollic.truestudio.exe.debug.toolchain.ld.1653497932"/>
-							<tool id="com.atollic.truestudio.exe.debug.toolchain.gpp.1173481492" name="C++ Compiler" superClass="com.atollic.truestudio.exe.debug.toolchain.gpp.1763019427"/>
-							<tool id="com.atollic.truestudio.exe.debug.toolchain.ldcc.1232769832" name="C++ Linker" superClass="com.atollic.truestudio.exe.debug.toolchain.ldcc.1086895010"/>
-							<tool id="com.atollic.truestudio.ar.base.302675595" name="Archiver" superClass="com.atollic.truestudio.ar.base.585094976"/>
-							<tool id="com.atollic.truestudio.exe.debug.toolchain.secoutput.418767397" name="Other" superClass="com.atollic.truestudio.exe.debug.toolchain.secoutput.1644916118"/>
 						</toolChain>
 					</folderInfo>
 					<fileInfo id="com.atollic.truestudio.exe.debug.1391513723.1384895281" name="portmacro.h" rcbsApplicability="disable" resourcePath="FreeRTOS/portable/GCC/ARM_CM4F/portmacro.h" toolsToInvoke=""/>
@@ -245,7 +227,6 @@
 					<sourceEntries>
 						<entry excluding="startup|Trace|StdPeriph_Driver|FreeRTOS|Common|src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="FreeRTOS"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Trace"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

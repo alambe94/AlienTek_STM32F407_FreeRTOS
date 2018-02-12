@@ -8,57 +8,59 @@
 #include "FreeRTOS.h"
 #include "task.h"
 /************************************************
- ALIENTEK Ì½Ë÷ÕßSTM32F407¿ª·¢°å FreeRTOSÊµÑé7-1
- FreeRTOSÁÐ±íÏîµÄ²åÈëºÍÉ¾³ý-¿âº¯Êý°æ±¾
- ¼¼ÊõÖ§³Ö£ºwww.openedv.com
- ÌÔ±¦µêÆÌ£ºhttp://eboard.taobao.com 
- ¹Ø×¢Î¢ÐÅ¹«ÖÚÆ½Ì¨Î¢ÐÅºÅ£º"ÕýµãÔ­×Ó"£¬Ãâ·Ñ»ñÈ¡STM32×ÊÁÏ¡£
- ¹ãÖÝÊÐÐÇÒíµç×Ó¿Æ¼¼ÓÐÏÞ¹«Ë¾  
- ×÷Õß£ºÕýµãÔ­×Ó @ALIENTEK
+ ALIENTEK Ì½ï¿½ï¿½ï¿½ï¿½STM32F407ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ FreeRTOSÊµï¿½ï¿½7-1
+ FreeRTOSï¿½Ð±ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½-ï¿½âº¯ï¿½ï¿½ï¿½æ±¾
+ ï¿½ï¿½ï¿½ï¿½Ö§ï¿½Ö£ï¿½www.openedv.com
+ ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ì£ï¿½http://eboard.taobao.com 
+ ï¿½ï¿½×¢Î¢ï¿½Å¹ï¿½ï¿½ï¿½Æ½Ì¨Î¢ï¿½ÅºÅ£ï¿½"ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½"ï¿½ï¿½ï¿½ï¿½Ñ»ï¿½È¡STM32ï¿½ï¿½ï¿½Ï¡ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Æ¼ï¿½ï¿½ï¿½ï¿½Þ¹ï¿½Ë¾  
+ ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ @ALIENTEK
 ************************************************/
 
-//ÈÎÎñÓÅÏÈ¼¶
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
 #define START_TASK_PRIO		1
-//ÈÎÎñ¶ÑÕ»´óÐ¡	
+//ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡	
 #define START_STK_SIZE 		128  
-//ÈÎÎñ¾ä±ú
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 TaskHandle_t StartTask_Handler;
-//ÈÎÎñº¯Êý
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void start_task(void *pvParameters);
 
-//ÈÎÎñÓÅÏÈ¼¶
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
 #define TASK1_TASK_PRIO		2
-//ÈÎÎñ¶ÑÕ»´óÐ¡	
+//ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡	
 #define TASK1_STK_SIZE 		128  
-//ÈÎÎñ¾ä±ú
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 TaskHandle_t Task1Task_Handler;
-//ÈÎÎñº¯Êý
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void task1_task(void *pvParameters);
 
-//ÈÎÎñÓÅÏÈ¼¶
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
 #define LIST_TASK_PRIO		3
-//ÈÎÎñ¶ÑÕ»´óÐ¡	
+//ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡	
 #define LIST_STK_SIZE 		128  
-//ÈÎÎñ¾ä±ú
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 TaskHandle_t ListTask_Handler;
-//ÈÎÎñº¯Êý
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void list_task(void *pvParameters);
 
-//¶¨ÒåÒ»¸ö²âÊÔÓÃµÄÁÐ±íºÍ3¸öÁÐ±íÏî
-List_t TestList;		//²âÊÔÓÃÁÐ±í
-ListItem_t ListItem1;	//²âÊÔÓÃÁÐ±íÏî1
-ListItem_t ListItem2;	//²âÊÔÓÃÁÐ±íÏî2
-ListItem_t ListItem3;	//²âÊÔÓÃÁÐ±íÏî3
+//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ð±ï¿½ï¿½3ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½
+List_t TestList;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+ListItem_t ListItem1;	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½1
+ListItem_t ListItem2;	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½2
+ListItem_t ListItem3;	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½3
 
 int main(void)
 { 
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);//ÉèÖÃÏµÍ³ÖÐ¶ÏÓÅÏÈ¼¶·Ö×é4
-	delay_init(168);					//³õÊ¼»¯ÑÓÊ±º¯Êý
-	uart_init(115200);     				//³õÊ¼»¯´®¿Ú
-	LED_Init();		        			//³õÊ¼»¯LED¶Ë¿Ú
-	KEY_Init();							//³õÊ¼»¯°´¼ü
-	LCD_Init();							//³õÊ¼»¯LCD
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);//ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½ï¿½ï¿½4
+	delay_init(168);					//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
+	uart_init(115200);     				//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	LED_Init();		        			//ï¿½ï¿½Ê¼ï¿½ï¿½LEDï¿½Ë¿ï¿½
+	KEY_Init();							//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	LCD_Init();							//ï¿½ï¿½Ê¼ï¿½ï¿½LCD
 	
+	vTraceEnable(TRC_START);//start tracealyzer
+
     POINT_COLOR = RED;
 	LCD_ShowString(30,10,200,16,16,"ATK STM32F103/407");	
 	LCD_ShowString(30,30,200,16,16,"FreeRTOS Examp 7-1");
@@ -66,162 +68,162 @@ int main(void)
 	LCD_ShowString(30,70,200,16,16,"ATOM@ALIENTEK");
 	LCD_ShowString(30,90,200,16,16,"2016/11/25");
 	
-	//´´½¨¿ªÊ¼ÈÎÎñ
-    xTaskCreate((TaskFunction_t )start_task,            //ÈÎÎñº¯Êý
-                (const char*    )"start_task",          //ÈÎÎñÃû³Æ
-                (uint16_t       )START_STK_SIZE,        //ÈÎÎñ¶ÑÕ»´óÐ¡
-                (void*          )NULL,                  //´«µÝ¸øÈÎÎñº¯ÊýµÄ²ÎÊý
-                (UBaseType_t    )START_TASK_PRIO,       //ÈÎÎñÓÅÏÈ¼¶
-                (TaskHandle_t*  )&StartTask_Handler);   //ÈÎÎñ¾ä±ú              
-    vTaskStartScheduler();          //¿ªÆôÈÎÎñµ÷¶È
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+    xTaskCreate((TaskFunction_t )start_task,            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                (const char*    )"start_task",          //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                (uint16_t       )START_STK_SIZE,        //ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡
+                (void*          )NULL,                  //ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
+                (UBaseType_t    )START_TASK_PRIO,       //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
+                (TaskHandle_t*  )&StartTask_Handler);   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½              
+    vTaskStartScheduler();          //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 }
 
-//¿ªÊ¼ÈÎÎñÈÎÎñº¯Êý
+//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void start_task(void *pvParameters)
 {
-    taskENTER_CRITICAL();           //½øÈëÁÙ½çÇø
-    //´´½¨TASK1ÈÎÎñ
+    taskENTER_CRITICAL();           //ï¿½ï¿½ï¿½ï¿½ï¿½Ù½ï¿½ï¿½ï¿½
+    //ï¿½ï¿½ï¿½ï¿½TASK1ï¿½ï¿½ï¿½ï¿½
     xTaskCreate((TaskFunction_t )task1_task,             
                 (const char*    )"task1_task",           
                 (uint16_t       )TASK1_STK_SIZE,        
                 (void*          )NULL,                  
                 (UBaseType_t    )TASK1_TASK_PRIO,        
                 (TaskHandle_t*  )&Task1Task_Handler);   
-    //´´½¨LISTÈÎÎñ
+    //ï¿½ï¿½ï¿½ï¿½LISTï¿½ï¿½ï¿½ï¿½
     xTaskCreate((TaskFunction_t )list_task,     
                 (const char*    )"list_task",   
                 (uint16_t       )LIST_STK_SIZE,
                 (void*          )NULL,
                 (UBaseType_t    )LIST_TASK_PRIO,
                 (TaskHandle_t*  )&ListTask_Handler); 
-    vTaskDelete(StartTask_Handler); //É¾³ý¿ªÊ¼ÈÎÎñ
-    taskEXIT_CRITICAL();            //ÍË³öÁÙ½çÇø
+    vTaskDelete(StartTask_Handler); //É¾ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+    taskEXIT_CRITICAL();            //ï¿½Ë³ï¿½ï¿½Ù½ï¿½ï¿½ï¿½
 }
 
-//task1ÈÎÎñº¯Êý
+//task1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void task1_task(void *pvParameters)
 {
 	while(1)
 	{
 		LED0=!LED0;
-        vTaskDelay(500);                           //ÑÓÊ±500ms£¬Ò²¾ÍÊÇ500¸öÊ±ÖÓ½ÚÅÄ	
+        vTaskDelay(500);                           //ï¿½ï¿½Ê±500msï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½500ï¿½ï¿½Ê±ï¿½Ó½ï¿½ï¿½ï¿½	
 	}
 }
 
-//listÈÎÎñº¯Êý
+//listï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void list_task(void *pvParameters)
 {
-	//µÚÒ»²½£º³õÊ¼»¯ÁÐ±íºÍÁÐ±íÏî
+	//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½
 	vListInitialise(&TestList);
 	vListInitialiseItem(&ListItem1);
 	vListInitialiseItem(&ListItem2);
 	vListInitialiseItem(&ListItem3);
 	
-	ListItem1.xItemValue=40;			//ListItem1ÁÐ±íÏîÖµÎª40
-	ListItem2.xItemValue=60;			//ListItem2ÁÐ±íÏîÖµÎª60
-	ListItem3.xItemValue=50;			//ListItem3ÁÐ±íÏîÖµÎª50
+	ListItem1.xItemValue=40;			//ListItem1ï¿½Ð±ï¿½ï¿½ï¿½ÖµÎª40
+	ListItem2.xItemValue=60;			//ListItem2ï¿½Ð±ï¿½ï¿½ï¿½ÖµÎª60
+	ListItem3.xItemValue=50;			//ListItem3ï¿½Ð±ï¿½ï¿½ï¿½ÖµÎª50
 	
-	//µÚ¶þ²½£º´òÓ¡ÁÐ±íºÍÆäËûÁÐ±íÏîµÄµØÖ·
-	printf("/*******************ÁÐ±íºÍÁÐ±íÏîµØÖ·*******************/\r\n");
-	printf("ÏîÄ¿                              µØÖ·				    \r\n");
+	//ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¡ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½Äµï¿½Ö·
+	printf("/*******************ï¿½Ð±ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ö·*******************/\r\n");
+	printf("ï¿½ï¿½Ä¿                              ï¿½ï¿½Ö·				    \r\n");
 	printf("TestList                          %#x					\r\n",(int)&TestList);
 	printf("TestList->pxIndex                 %#x					\r\n",(int)TestList.pxIndex);
 	printf("TestList->xListEnd                %#x					\r\n",(int)(&TestList.xListEnd));
 	printf("ListItem1                         %#x					\r\n",(int)&ListItem1);
 	printf("ListItem2                         %#x					\r\n",(int)&ListItem2);
 	printf("ListItem3                         %#x					\r\n",(int)&ListItem3);
-	printf("/************************½áÊø**************************/\r\n");
-	printf("°´ÏÂKEY_UP¼ü¼ÌÐø!\r\n\r\n\r\n");
-	while(KEY_Scan(0)!=WKUP_PRES) delay_ms(10);					//µÈ´ýKEY_UP¼ü°´ÏÂ
+	printf("/************************ï¿½ï¿½ï¿½ï¿½**************************/\r\n");
+	printf("ï¿½ï¿½ï¿½ï¿½KEY_UPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!\r\n\r\n\r\n");
+	while(KEY_Scan(0)!=WKUP_PRES) delay_ms(10);					//ï¿½È´ï¿½KEY_UPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	//µÚÈý²½£ºÏòÁÐ±íTestListÌí¼ÓÁÐ±íÏîListItem1£¬²¢Í¨¹ý´®¿Ú´òÓ¡ËùÓÐ
-	//ÁÐ±íÏîÖÐ³ÉÔ±±äÁ¿pxNextºÍpxPreviousµÄÖµ£¬Í¨¹ýÕâÁ½¸öÖµ¹Û²ìÁÐ±í
-	//ÏîÔÚÁÐ±íÖÐµÄÁ¬½ÓÇé¿ö¡£
-	vListInsert(&TestList,&ListItem1);		//²åÈëÁÐ±íÏîListItem1
-	printf("/******************Ìí¼ÓÁÐ±íÏîListItem1*****************/\r\n");
-	printf("ÏîÄ¿                              µØÖ·				    \r\n");
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½TestListï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem1ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½
+	//ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ð³ï¿½Ô±ï¿½ï¿½ï¿½ï¿½pxNextï¿½ï¿½pxPreviousï¿½ï¿½Öµï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Û²ï¿½ï¿½Ð±ï¿½
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	vListInsert(&TestList,&ListItem1);		//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem1
+	printf("/******************ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem1*****************/\r\n");
+	printf("ï¿½ï¿½Ä¿                              ï¿½ï¿½Ö·				    \r\n");
 	printf("TestList->xListEnd->pxNext        %#x					\r\n",(int)(TestList.xListEnd.pxNext));
 	printf("ListItem1->pxNext                 %#x					\r\n",(int)(ListItem1.pxNext));
-	printf("/*******************Ç°ºóÏòÁ¬½Ó·Ö¸îÏß********************/\r\n");
+	printf("/*******************Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó·Ö¸ï¿½ï¿½ï¿½********************/\r\n");
 	printf("TestList->xListEnd->pxPrevious    %#x					\r\n",(int)(TestList.xListEnd.pxPrevious));
 	printf("ListItem1->pxPrevious             %#x					\r\n",(int)(ListItem1.pxPrevious));
-	printf("/************************½áÊø**************************/\r\n");
-	printf("°´ÏÂKEY_UP¼ü¼ÌÐø!\r\n\r\n\r\n");
-	while(KEY_Scan(0)!=WKUP_PRES) delay_ms(10);					//µÈ´ýKEY_UP¼ü°´ÏÂ
+	printf("/************************ï¿½ï¿½ï¿½ï¿½**************************/\r\n");
+	printf("ï¿½ï¿½ï¿½ï¿½KEY_UPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!\r\n\r\n\r\n");
+	while(KEY_Scan(0)!=WKUP_PRES) delay_ms(10);					//ï¿½È´ï¿½KEY_UPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	//µÚËÄ²½£ºÏòÁÐ±íTestListÌí¼ÓÁÐ±íÏîListItem2£¬²¢Í¨¹ý´®¿Ú´òÓ¡ËùÓÐ
-	//ÁÐ±íÏîÖÐ³ÉÔ±±äÁ¿pxNextºÍpxPreviousµÄÖµ£¬Í¨¹ýÕâÁ½¸öÖµ¹Û²ìÁÐ±í
-	//ÏîÔÚÁÐ±íÖÐµÄÁ¬½ÓÇé¿ö¡£
-	vListInsert(&TestList,&ListItem2);	//²åÈëÁÐ±íÏîListItem2
-	printf("/******************Ìí¼ÓÁÐ±íÏîListItem2*****************/\r\n");
-	printf("ÏîÄ¿                              µØÖ·				    \r\n");
+	//ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½TestListï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem2ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½
+	//ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ð³ï¿½Ô±ï¿½ï¿½ï¿½ï¿½pxNextï¿½ï¿½pxPreviousï¿½ï¿½Öµï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Û²ï¿½ï¿½Ð±ï¿½
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	vListInsert(&TestList,&ListItem2);	//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem2
+	printf("/******************ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem2*****************/\r\n");
+	printf("ï¿½ï¿½Ä¿                              ï¿½ï¿½Ö·				    \r\n");
 	printf("TestList->xListEnd->pxNext        %#x					\r\n",(int)(TestList.xListEnd.pxNext));
 	printf("ListItem1->pxNext                 %#x					\r\n",(int)(ListItem1.pxNext));
 	printf("ListItem2->pxNext                 %#x					\r\n",(int)(ListItem2.pxNext));
-	printf("/*******************Ç°ºóÏòÁ¬½Ó·Ö¸îÏß********************/\r\n");
+	printf("/*******************Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó·Ö¸ï¿½ï¿½ï¿½********************/\r\n");
 	printf("TestList->xListEnd->pxPrevious    %#x					\r\n",(int)(TestList.xListEnd.pxPrevious));
 	printf("ListItem1->pxPrevious             %#x					\r\n",(int)(ListItem1.pxPrevious));
 	printf("ListItem2->pxPrevious             %#x					\r\n",(int)(ListItem2.pxPrevious));
-	printf("/************************½áÊø**************************/\r\n");
-	printf("°´ÏÂKEY_UP¼ü¼ÌÐø!\r\n\r\n\r\n");
-	while(KEY_Scan(0)!=WKUP_PRES) delay_ms(10);					//µÈ´ýKEY_UP¼ü°´ÏÂ
+	printf("/************************ï¿½ï¿½ï¿½ï¿½**************************/\r\n");
+	printf("ï¿½ï¿½ï¿½ï¿½KEY_UPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!\r\n\r\n\r\n");
+	while(KEY_Scan(0)!=WKUP_PRES) delay_ms(10);					//ï¿½È´ï¿½KEY_UPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	//µÚÎå²½£ºÏòÁÐ±íTestListÌí¼ÓÁÐ±íÏîListItem3£¬²¢Í¨¹ý´®¿Ú´òÓ¡ËùÓÐ
-	//ÁÐ±íÏîÖÐ³ÉÔ±±äÁ¿pxNextºÍpxPreviousµÄÖµ£¬Í¨¹ýÕâÁ½¸öÖµ¹Û²ìÁÐ±í
-	//ÏîÔÚÁÐ±íÖÐµÄÁ¬½ÓÇé¿ö¡£
-	vListInsert(&TestList,&ListItem3);	//²åÈëÁÐ±íÏîListItem3
-	printf("/******************Ìí¼ÓÁÐ±íÏîListItem3*****************/\r\n");
-	printf("ÏîÄ¿                              µØÖ·				    \r\n");
+	//ï¿½ï¿½ï¿½å²½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½TestListï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem3ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½
+	//ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ð³ï¿½Ô±ï¿½ï¿½ï¿½ï¿½pxNextï¿½ï¿½pxPreviousï¿½ï¿½Öµï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Û²ï¿½ï¿½Ð±ï¿½
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	vListInsert(&TestList,&ListItem3);	//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem3
+	printf("/******************ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem3*****************/\r\n");
+	printf("ï¿½ï¿½Ä¿                              ï¿½ï¿½Ö·				    \r\n");
 	printf("TestList->xListEnd->pxNext        %#x					\r\n",(int)(TestList.xListEnd.pxNext));
 	printf("ListItem1->pxNext                 %#x					\r\n",(int)(ListItem1.pxNext));
 	printf("ListItem3->pxNext                 %#x					\r\n",(int)(ListItem3.pxNext));
 	printf("ListItem2->pxNext                 %#x					\r\n",(int)(ListItem2.pxNext));
-	printf("/*******************Ç°ºóÏòÁ¬½Ó·Ö¸îÏß********************/\r\n");
+	printf("/*******************Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó·Ö¸ï¿½ï¿½ï¿½********************/\r\n");
 	printf("TestList->xListEnd->pxPrevious    %#x					\r\n",(int)(TestList.xListEnd.pxPrevious));
 	printf("ListItem1->pxPrevious             %#x					\r\n",(int)(ListItem1.pxPrevious));
 	printf("ListItem3->pxPrevious             %#x					\r\n",(int)(ListItem3.pxPrevious));
 	printf("ListItem2->pxPrevious             %#x					\r\n",(int)(ListItem2.pxPrevious));
-	printf("/************************½áÊø**************************/\r\n");
-	printf("°´ÏÂKEY_UP¼ü¼ÌÐø!\r\n\r\n\r\n");
-	while(KEY_Scan(0)!=WKUP_PRES) delay_ms(10);					//µÈ´ýKEY_UP¼ü°´ÏÂ
+	printf("/************************ï¿½ï¿½ï¿½ï¿½**************************/\r\n");
+	printf("ï¿½ï¿½ï¿½ï¿½KEY_UPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!\r\n\r\n\r\n");
+	while(KEY_Scan(0)!=WKUP_PRES) delay_ms(10);					//ï¿½È´ï¿½KEY_UPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	//µÚÁù²½£ºÉ¾³ýListItem2£¬²¢Í¨¹ý´®¿Ú´òÓ¡ËùÓÐÁÐ±íÏîÖÐ³ÉÔ±±äÁ¿pxNextºÍ
-	//pxPreviousµÄÖµ£¬Í¨¹ýÕâÁ½¸öÖµ¹Û²ìÁÐ±íÏîÔÚÁÐ±íÖÐµÄÁ¬½ÓÇé¿ö¡£
-	uxListRemove(&ListItem2);						//É¾³ýListItem2
-	printf("/******************É¾³ýÁÐ±íÏîListItem2*****************/\r\n");
-	printf("ÏîÄ¿                              µØÖ·				    \r\n");
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½ListItem2ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ð³ï¿½Ô±ï¿½ï¿½ï¿½ï¿½pxNextï¿½ï¿½
+	//pxPreviousï¿½ï¿½Öµï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Û²ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	uxListRemove(&ListItem2);						//É¾ï¿½ï¿½ListItem2
+	printf("/******************É¾ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem2*****************/\r\n");
+	printf("ï¿½ï¿½Ä¿                              ï¿½ï¿½Ö·				    \r\n");
 	printf("TestList->xListEnd->pxNext        %#x					\r\n",(int)(TestList.xListEnd.pxNext));
 	printf("ListItem1->pxNext                 %#x					\r\n",(int)(ListItem1.pxNext));
 	printf("ListItem3->pxNext                 %#x					\r\n",(int)(ListItem3.pxNext));
-	printf("/*******************Ç°ºóÏòÁ¬½Ó·Ö¸îÏß********************/\r\n");
+	printf("/*******************Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó·Ö¸ï¿½ï¿½ï¿½********************/\r\n");
 	printf("TestList->xListEnd->pxPrevious    %#x					\r\n",(int)(TestList.xListEnd.pxPrevious));
 	printf("ListItem1->pxPrevious             %#x					\r\n",(int)(ListItem1.pxPrevious));
 	printf("ListItem3->pxPrevious             %#x					\r\n",(int)(ListItem3.pxPrevious));
-	printf("/************************½áÊø**************************/\r\n");
-	printf("°´ÏÂKEY_UP¼ü¼ÌÐø!\r\n\r\n\r\n");
-	while(KEY_Scan(0)!=WKUP_PRES) delay_ms(10);					//µÈ´ýKEY_UP¼ü°´ÏÂ
+	printf("/************************ï¿½ï¿½ï¿½ï¿½**************************/\r\n");
+	printf("ï¿½ï¿½ï¿½ï¿½KEY_UPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!\r\n\r\n\r\n");
+	while(KEY_Scan(0)!=WKUP_PRES) delay_ms(10);					//ï¿½È´ï¿½KEY_UPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	//µÚÆß²½£ºÉ¾³ýListItem2£¬²¢Í¨¹ý´®¿Ú´òÓ¡ËùÓÐÁÐ±íÏîÖÐ³ÉÔ±±äÁ¿pxNextºÍ
-	//pxPreviousµÄÖµ£¬Í¨¹ýÕâÁ½¸öÖµ¹Û²ìÁÐ±íÏîÔÚÁÐ±íÖÐµÄÁ¬½ÓÇé¿ö¡£
-	TestList.pxIndex=TestList.pxIndex->pxNext;			//pxIndexÏòºóÒÆÒ»Ïî£¬ÕâÑùpxIndex¾Í»áÖ¸ÏòListItem1¡£
-	vListInsertEnd(&TestList,&ListItem2);				//ÁÐ±íÄ©Î²Ìí¼ÓÁÐ±íÏîListItem2
-	printf("/***************ÔÚÄ©Î²Ìí¼ÓÁÐ±íÏîListItem2***************/\r\n");
-	printf("ÏîÄ¿                              µØÖ·				    \r\n");
+	//ï¿½ï¿½ï¿½ß²ï¿½ï¿½ï¿½É¾ï¿½ï¿½ListItem2ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ð³ï¿½Ô±ï¿½ï¿½ï¿½ï¿½pxNextï¿½ï¿½
+	//pxPreviousï¿½ï¿½Öµï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Û²ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	TestList.pxIndex=TestList.pxIndex->pxNext;			//pxIndexï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½î£¬ï¿½ï¿½ï¿½ï¿½pxIndexï¿½Í»ï¿½Ö¸ï¿½ï¿½ListItem1ï¿½ï¿½
+	vListInsertEnd(&TestList,&ListItem2);				//ï¿½Ð±ï¿½Ä©Î²ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem2
+	printf("/***************ï¿½ï¿½Ä©Î²ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ListItem2***************/\r\n");
+	printf("ï¿½ï¿½Ä¿                              ï¿½ï¿½Ö·				    \r\n");
 	printf("TestList->pxIndex                 %#x					\r\n",(int)TestList.pxIndex);
 	printf("TestList->xListEnd->pxNext        %#x					\r\n",(int)(TestList.xListEnd.pxNext));
 	printf("ListItem2->pxNext                 %#x					\r\n",(int)(ListItem2.pxNext));
 	printf("ListItem1->pxNext                 %#x					\r\n",(int)(ListItem1.pxNext));
 	printf("ListItem3->pxNext                 %#x					\r\n",(int)(ListItem3.pxNext));
-	printf("/*******************Ç°ºóÏòÁ¬½Ó·Ö¸îÏß********************/\r\n");
+	printf("/*******************Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó·Ö¸ï¿½ï¿½ï¿½********************/\r\n");
 	printf("TestList->xListEnd->pxPrevious    %#x					\r\n",(int)(TestList.xListEnd.pxPrevious));
 	printf("ListItem2->pxPrevious             %#x					\r\n",(int)(ListItem2.pxPrevious));
 	printf("ListItem1->pxPrevious             %#x					\r\n",(int)(ListItem1.pxPrevious));
 	printf("ListItem3->pxPrevious             %#x					\r\n",(int)(ListItem3.pxPrevious));
-	printf("/************************½áÊø**************************/\r\n\r\n\r\n");
+	printf("/************************ï¿½ï¿½ï¿½ï¿½**************************/\r\n\r\n\r\n");
 	while(1)
 	{
 		LED1=!LED1;
-        vTaskDelay(1000);                           //ÑÓÊ±1s£¬Ò²¾ÍÊÇ1000¸öÊ±ÖÓ½ÚÅÄ	
+        vTaskDelay(1000);                           //ï¿½ï¿½Ê±1sï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½1000ï¿½ï¿½Ê±ï¿½Ó½ï¿½ï¿½ï¿½	
 	}
 }
 

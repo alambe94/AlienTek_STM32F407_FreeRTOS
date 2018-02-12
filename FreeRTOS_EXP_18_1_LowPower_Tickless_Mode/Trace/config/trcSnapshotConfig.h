@@ -67,7 +67,7 @@
  * recording is stopped when the buffer becomes full. This is useful for
  * recording events following a specific state, e.g., the startup sequence.
  *****************************************************************************/
-#define TRC_CFG_SNAPSHOT_MODE TRC_SNAPSHOT_MODE_STOP_WHEN_FULL
+#define TRC_CFG_SNAPSHOT_MODE TRC_SNAPSHOT_MODE_RING_BUFFER
 
 /*******************************************************************************
  * TRC_CFG_SCHEDULING_ONLY
@@ -98,7 +98,7 @@
  * Default value is 1000, which means that 4000 bytes is allocated for the
  * event buffer.
  ******************************************************************************/
-#define TRC_CFG_EVENT_BUFFER_SIZE 10000
+#define TRC_CFG_EVENT_BUFFER_SIZE 1000
 
 /*******************************************************************************
  * TRC_CFG_NTASK, TRC_CFG_NISR, TRC_CFG_NQUEUE, TRC_CFG_NSEMAPHORE...
@@ -122,7 +122,7 @@
  * check the actual usage by selecting View menu -> Trace Details -> 
  * Resource Usage -> Object Table. 
  ******************************************************************************/
-#define TRC_CFG_NTASK			65
+#define TRC_CFG_NTASK			10
 #define TRC_CFG_NISR			5
 #define TRC_CFG_NQUEUE			10
 #define TRC_CFG_NSEMAPHORE		10

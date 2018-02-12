@@ -51,6 +51,7 @@
 									<listOptionValue builtIn="false" value="../HARDWARE/TIMER"/>
 									<listOptionValue builtIn="false" value="../HARDWARE/KEY"/>
 									<listOptionValue builtIn="false" value="../USER"/>
+									<listOptionValue builtIn="false" value="../Trace/streamports/Jlink_RTT/include"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.841052773" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.952592810" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F407VG" valueType="enumerated"/>
