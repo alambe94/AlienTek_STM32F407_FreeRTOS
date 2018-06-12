@@ -62,6 +62,8 @@ int main(void)
 	LCD_ShowString(30,210,200,16,16,"Message:    ");
 	POINT_COLOR = BLUE;
 	
+	vTraceEnable(TRC_START);//start tracealyzer
+
 	//������ʼ����
     xTaskCreate((TaskFunction_t )start_task,            //������
                 (const char*    )"start_task",          //��������

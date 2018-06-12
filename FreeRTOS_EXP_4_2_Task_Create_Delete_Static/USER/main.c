@@ -108,9 +108,6 @@ int main(void)
 	LED_Init();		        			//��ʼ��LED�˿�
 	LCD_Init();							//��ʼ��LCD
 	
-	vTraceEnable(TRC_START);//start tracealyzer
-
-
     POINT_COLOR = RED;
 	LCD_ShowString(30,10,200,16,16,"ATK STM32F103/407");	
 	LCD_ShowString(30,30,200,16,16,"FreeRTOS Examp 6-2");
@@ -118,6 +115,8 @@ int main(void)
 	LCD_ShowString(30,70,200,16,16,"ATOM@ALIENTEK");
 	LCD_ShowString(30,90,200,16,16,"2016/11/25");
 	
+	vTraceEnable(TRC_START);//start tracealyzer
+
     //������ʼ����
 	StartTask_Handler=xTaskCreateStatic((TaskFunction_t	)start_task,		//������
 										(const char* 	)"start_task",		//��������

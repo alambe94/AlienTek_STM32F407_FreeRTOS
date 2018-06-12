@@ -46,6 +46,7 @@ int main(void)
 	TIM3_Int_Init(10000-1,8400-1);		//��ʼ����ʱ��3����ʱ������1S
 	TIM5_Int_Init(10000-1,8400-1);		//��ʼ����ʱ��5����ʱ������1S
 	
+	vTraceEnable(TRC_START);//start tracealyzer
 
 	//������ʼ����
     xTaskCreate((TaskFunction_t )start_task,            //������

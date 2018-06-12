@@ -121,7 +121,9 @@ int main(void)
 	TIM9_Int_Init(5000,16800-1);		//��ʼ����ʱ��9������500ms
 	my_mem_init(SRAMIN);            	//��ʼ���ڲ��ڴ��
     freertos_load_main_ui();        	//������UI
-	
+
+	vTraceEnable(TRC_START);//start tracealyzer
+
 	//������ʼ����
     xTaskCreate((TaskFunction_t )start_task,            //������
                 (const char*    )"start_task",          //��������

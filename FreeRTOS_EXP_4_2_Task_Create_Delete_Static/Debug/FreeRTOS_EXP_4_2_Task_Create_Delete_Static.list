@@ -25,23 +25,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  10 .debug_line   00008195  00000000  00000000  000200f0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_info   00017420  00000000  00000000  00028285  2**0
+ 11 .debug_info   00017430  00000000  00000000  00028285  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_abbrev 00003108  00000000  00000000  0003f6a5  2**0
+ 12 .debug_abbrev 00003108  00000000  00000000  0003f6b5  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_aranges 000011f8  00000000  00000000  000427b0  2**3
+ 13 .debug_aranges 000011f8  00000000  00000000  000427c0  2**3
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_ranges 00001080  00000000  00000000  000439a8  2**3
+ 14 .debug_ranges 00001080  00000000  00000000  000439b8  2**3
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_str    000061f8  00000000  00000000  00044a28  2**0
+ 15 .debug_str    00006208  00000000  00000000  00044a38  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .comment      0000007c  00000000  00000000  0004ac20  2**0
+ 16 .comment      0000007c  00000000  00000000  0004ac40  2**0
                   CONTENTS, READONLY
- 17 .debug_frame  0000548c  00000000  00000000  0004ac9c  2**2
+ 17 .debug_frame  0000548c  00000000  00000000  0004acbc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 18 .stab         0000009c  00000000  00000000  00050128  2**2
+ 18 .stab         0000009c  00000000  00000000  00050148  2**2
                   CONTENTS, READONLY, DEBUGGING
- 19 .stabstr      0000014d  00000000  00000000  000501c4  2**0
+ 19 .stabstr      0000014d  00000000  00000000  000501e4  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -25243,66 +25243,65 @@ int main(void)
 	LCD_Init();							//��ʼ��LCD
  800aa14:	f7fa fa90 	bl	8004f38 <LCD_Init>
 	
-	vTraceEnable(TRC_START);//start tracealyzer
- 800aa18:	2001      	movs	r0, #1
- 800aa1a:	f7fe ff3f 	bl	800989c <vTraceEnable>
-
-
     POINT_COLOR = RED;
- 800aa1e:	4b25      	ldr	r3, [pc, #148]	; (800aab4 <main+0xc0>)
- 800aa20:	f44f 4278 	mov.w	r2, #63488	; 0xf800
- 800aa24:	801a      	strh	r2, [r3, #0]
+ 800aa18:	4b26      	ldr	r3, [pc, #152]	; (800aab4 <main+0xc0>)
+ 800aa1a:	f44f 4278 	mov.w	r2, #63488	; 0xf800
+ 800aa1e:	801a      	strh	r2, [r3, #0]
 	LCD_ShowString(30,10,200,16,16,"ATK STM32F103/407");	
- 800aa26:	4b24      	ldr	r3, [pc, #144]	; (800aab8 <main+0xc4>)
- 800aa28:	9301      	str	r3, [sp, #4]
- 800aa2a:	2310      	movs	r3, #16
- 800aa2c:	9300      	str	r3, [sp, #0]
- 800aa2e:	2310      	movs	r3, #16
- 800aa30:	22c8      	movs	r2, #200	; 0xc8
- 800aa32:	210a      	movs	r1, #10
- 800aa34:	201e      	movs	r0, #30
- 800aa36:	f7fe fa43 	bl	8008ec0 <LCD_ShowString>
+ 800aa20:	4b25      	ldr	r3, [pc, #148]	; (800aab8 <main+0xc4>)
+ 800aa22:	9301      	str	r3, [sp, #4]
+ 800aa24:	2310      	movs	r3, #16
+ 800aa26:	9300      	str	r3, [sp, #0]
+ 800aa28:	2310      	movs	r3, #16
+ 800aa2a:	22c8      	movs	r2, #200	; 0xc8
+ 800aa2c:	210a      	movs	r1, #10
+ 800aa2e:	201e      	movs	r0, #30
+ 800aa30:	f7fe fa46 	bl	8008ec0 <LCD_ShowString>
 	LCD_ShowString(30,30,200,16,16,"FreeRTOS Examp 6-2");
- 800aa3a:	4b20      	ldr	r3, [pc, #128]	; (800aabc <main+0xc8>)
- 800aa3c:	9301      	str	r3, [sp, #4]
- 800aa3e:	2310      	movs	r3, #16
- 800aa40:	9300      	str	r3, [sp, #0]
- 800aa42:	2310      	movs	r3, #16
- 800aa44:	22c8      	movs	r2, #200	; 0xc8
- 800aa46:	211e      	movs	r1, #30
- 800aa48:	201e      	movs	r0, #30
- 800aa4a:	f7fe fa39 	bl	8008ec0 <LCD_ShowString>
+ 800aa34:	4b21      	ldr	r3, [pc, #132]	; (800aabc <main+0xc8>)
+ 800aa36:	9301      	str	r3, [sp, #4]
+ 800aa38:	2310      	movs	r3, #16
+ 800aa3a:	9300      	str	r3, [sp, #0]
+ 800aa3c:	2310      	movs	r3, #16
+ 800aa3e:	22c8      	movs	r2, #200	; 0xc8
+ 800aa40:	211e      	movs	r1, #30
+ 800aa42:	201e      	movs	r0, #30
+ 800aa44:	f7fe fa3c 	bl	8008ec0 <LCD_ShowString>
 	LCD_ShowString(30,50,200,16,16,"Task Creat and Del");
- 800aa4e:	4b1c      	ldr	r3, [pc, #112]	; (800aac0 <main+0xcc>)
- 800aa50:	9301      	str	r3, [sp, #4]
- 800aa52:	2310      	movs	r3, #16
- 800aa54:	9300      	str	r3, [sp, #0]
- 800aa56:	2310      	movs	r3, #16
- 800aa58:	22c8      	movs	r2, #200	; 0xc8
- 800aa5a:	2132      	movs	r1, #50	; 0x32
- 800aa5c:	201e      	movs	r0, #30
- 800aa5e:	f7fe fa2f 	bl	8008ec0 <LCD_ShowString>
+ 800aa48:	4b1d      	ldr	r3, [pc, #116]	; (800aac0 <main+0xcc>)
+ 800aa4a:	9301      	str	r3, [sp, #4]
+ 800aa4c:	2310      	movs	r3, #16
+ 800aa4e:	9300      	str	r3, [sp, #0]
+ 800aa50:	2310      	movs	r3, #16
+ 800aa52:	22c8      	movs	r2, #200	; 0xc8
+ 800aa54:	2132      	movs	r1, #50	; 0x32
+ 800aa56:	201e      	movs	r0, #30
+ 800aa58:	f7fe fa32 	bl	8008ec0 <LCD_ShowString>
 	LCD_ShowString(30,70,200,16,16,"ATOM@ALIENTEK");
- 800aa62:	4b18      	ldr	r3, [pc, #96]	; (800aac4 <main+0xd0>)
- 800aa64:	9301      	str	r3, [sp, #4]
- 800aa66:	2310      	movs	r3, #16
- 800aa68:	9300      	str	r3, [sp, #0]
- 800aa6a:	2310      	movs	r3, #16
- 800aa6c:	22c8      	movs	r2, #200	; 0xc8
- 800aa6e:	2146      	movs	r1, #70	; 0x46
- 800aa70:	201e      	movs	r0, #30
- 800aa72:	f7fe fa25 	bl	8008ec0 <LCD_ShowString>
+ 800aa5c:	4b19      	ldr	r3, [pc, #100]	; (800aac4 <main+0xd0>)
+ 800aa5e:	9301      	str	r3, [sp, #4]
+ 800aa60:	2310      	movs	r3, #16
+ 800aa62:	9300      	str	r3, [sp, #0]
+ 800aa64:	2310      	movs	r3, #16
+ 800aa66:	22c8      	movs	r2, #200	; 0xc8
+ 800aa68:	2146      	movs	r1, #70	; 0x46
+ 800aa6a:	201e      	movs	r0, #30
+ 800aa6c:	f7fe fa28 	bl	8008ec0 <LCD_ShowString>
 	LCD_ShowString(30,90,200,16,16,"2016/11/25");
- 800aa76:	4b14      	ldr	r3, [pc, #80]	; (800aac8 <main+0xd4>)
- 800aa78:	9301      	str	r3, [sp, #4]
- 800aa7a:	2310      	movs	r3, #16
- 800aa7c:	9300      	str	r3, [sp, #0]
- 800aa7e:	2310      	movs	r3, #16
- 800aa80:	22c8      	movs	r2, #200	; 0xc8
- 800aa82:	215a      	movs	r1, #90	; 0x5a
- 800aa84:	201e      	movs	r0, #30
- 800aa86:	f7fe fa1b 	bl	8008ec0 <LCD_ShowString>
+ 800aa70:	4b15      	ldr	r3, [pc, #84]	; (800aac8 <main+0xd4>)
+ 800aa72:	9301      	str	r3, [sp, #4]
+ 800aa74:	2310      	movs	r3, #16
+ 800aa76:	9300      	str	r3, [sp, #0]
+ 800aa78:	2310      	movs	r3, #16
+ 800aa7a:	22c8      	movs	r2, #200	; 0xc8
+ 800aa7c:	215a      	movs	r1, #90	; 0x5a
+ 800aa7e:	201e      	movs	r0, #30
+ 800aa80:	f7fe fa1e 	bl	8008ec0 <LCD_ShowString>
 	
+	vTraceEnable(TRC_START);//start tracealyzer
+ 800aa84:	2001      	movs	r0, #1
+ 800aa86:	f7fe ff09 	bl	800989c <vTraceEnable>
+
     //������ʼ����
 	StartTask_Handler=xTaskCreateStatic((TaskFunction_t	)start_task,		//������
  800aa8a:	4b10      	ldr	r3, [pc, #64]	; (800aacc <main+0xd8>)

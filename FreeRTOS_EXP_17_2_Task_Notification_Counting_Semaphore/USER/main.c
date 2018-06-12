@@ -11,43 +11,43 @@
 #include "FreeRTOS.h"
 #include "task.h"
 /************************************************
- ALIENTEK Ì½Ë÷ÕßSTM32F407¿ª·¢°å FreeRTOSÊµÑé17-2
- FreeRTOSÈÎÎñÍ¨ÖªÄ£Äâ¼ÆÊýÐÍÐÅºÅÁ¿ÊµÑé-¿âº¯Êý°æ±¾
- ¼¼ÊõÖ§³Ö£ºwww.openedv.com
- ÌÔ±¦µêÆÌ£ºhttp://eboard.taobao.com 
- ¹Ø×¢Î¢ÐÅ¹«ÖÚÆ½Ì¨Î¢ÐÅºÅ£º"ÕýµãÔ­×Ó"£¬Ãâ·Ñ»ñÈ¡STM32×ÊÁÏ¡£
- ¹ãÖÝÊÐÐÇÒíµç×Ó¿Æ¼¼ÓÐÏÞ¹«Ë¾  
- ×÷Õß£ºÕýµãÔ­×Ó @ALIENTEK
+ ALIENTEK Ì½ï¿½ï¿½ï¿½ï¿½STM32F407ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ FreeRTOSÊµï¿½ï¿½17-2
+ FreeRTOSï¿½ï¿½ï¿½ï¿½Í¨ÖªÄ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åºï¿½ï¿½ï¿½Êµï¿½ï¿½-ï¿½âº¯ï¿½ï¿½ï¿½æ±¾
+ ï¿½ï¿½ï¿½ï¿½Ö§ï¿½Ö£ï¿½www.openedv.com
+ ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ì£ï¿½http://eboard.taobao.com 
+ ï¿½ï¿½×¢Î¢ï¿½Å¹ï¿½ï¿½ï¿½Æ½Ì¨Î¢ï¿½ÅºÅ£ï¿½"ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½"ï¿½ï¿½ï¿½ï¿½Ñ»ï¿½È¡STM32ï¿½ï¿½ï¿½Ï¡ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Æ¼ï¿½ï¿½ï¿½ï¿½Þ¹ï¿½Ë¾  
+ ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ @ALIENTEK
 ************************************************/
 
-//ÈÎÎñÓÅÏÈ¼¶
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
 #define START_TASK_PRIO			1
-//ÈÎÎñ¶ÑÕ»´óÐ¡	
+//ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡	
 #define START_STK_SIZE 			256  
-//ÈÎÎñ¾ä±ú
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 TaskHandle_t StartTask_Handler;
-//ÈÎÎñº¯Êý
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void start_task(void *pvParameters);
 
-//ÈÎÎñÓÅÏÈ¼¶
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
 #define SEMAPGIVE_TASK_PRIO		2
-//ÈÎÎñ¶ÑÕ»´óÐ¡	
+//ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡	
 #define SEMAPGIVE_STK_SIZE 		256  
-//ÈÎÎñ¾ä±ú
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 TaskHandle_t SemapGiveTask_Handler;
-//ÈÎÎñº¯Êý
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void SemapGive_task(void *pvParameters);
 
-//ÈÎÎñÓÅÏÈ¼¶
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
 #define SEMAPTAKE_TASK_PRIO 	3
-//ÈÎÎñ¶ÑÕ»´óÐ¡	
+//ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡	
 #define SEMAPTAKE_STK_SIZE  	256 
-//ÈÎÎñ¾ä±ú
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 TaskHandle_t SemapTakeTask_Handler;
-//ÈÎÎñº¯Êý
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void SemapTake_task(void *pvParameters);
 
-//LCDË¢ÆÁÊ±Ê¹ÓÃµÄÑÕÉ«
+//LCDË¢ï¿½ï¿½Ê±Ê¹ï¿½Ãµï¿½ï¿½ï¿½É«
 int lcd_discolor[14]={	WHITE, BLACK, BLUE,  BRED,      
 						GRED,  GBLUE, RED,   MAGENTA,       	 
 						GREEN, CYAN,  YELLOW,BROWN, 			
@@ -55,14 +55,14 @@ int lcd_discolor[14]={	WHITE, BLACK, BLUE,  BRED,
 
 int main(void)
 { 
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);//ÉèÖÃÏµÍ³ÖÐ¶ÏÓÅÏÈ¼¶·Ö×é4
-	delay_init(168);					//³õÊ¼»¯ÑÓÊ±º¯Êý
-	uart_init(115200);     				//³õÊ¼»¯´®¿Ú
-	LED_Init();		        			//³õÊ¼»¯LED¶Ë¿Ú
-	KEY_Init();							//³õÊ¼»¯°´¼ü
-	BEEP_Init();						//³õÊ¼»¯·äÃùÆ÷
-	LCD_Init();							//³õÊ¼»¯LCD
-	my_mem_init(SRAMIN);            	//³õÊ¼»¯ÄÚ²¿ÄÚ´æ³Ø
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);//ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½ï¿½ï¿½4
+	delay_init(168);					//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
+	uart_init(115200);     				//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	LED_Init();		        			//ï¿½ï¿½Ê¼ï¿½ï¿½LEDï¿½Ë¿ï¿½
+	KEY_Init();							//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	BEEP_Init();						//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	LCD_Init();							//ï¿½ï¿½Ê¼ï¿½ï¿½LCD
+	my_mem_init(SRAMIN);            	//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ú²ï¿½ï¿½Ú´ï¿½ï¿½
     
     POINT_COLOR = RED;
 	LCD_ShowString(30,10,200,16,16,"ATK STM32F103/407");	
@@ -78,52 +78,54 @@ int main(void)
 	LCD_ShowString(54,111,200,16,16,"Notify Value:   0");
 	POINT_COLOR = BLUE;
 	
-	//´´½¨¿ªÊ¼ÈÎÎñ
-    xTaskCreate((TaskFunction_t )start_task,            //ÈÎÎñº¯Êý
-                (const char*    )"start_task",          //ÈÎÎñÃû³Æ
-                (uint16_t       )START_STK_SIZE,        //ÈÎÎñ¶ÑÕ»´óÐ¡
-                (void*          )NULL,                  //´«µÝ¸øÈÎÎñº¯ÊýµÄ²ÎÊý
-                (UBaseType_t    )START_TASK_PRIO,       //ÈÎÎñÓÅÏÈ¼¶
-                (TaskHandle_t*  )&StartTask_Handler);   //ÈÎÎñ¾ä±ú              
-    vTaskStartScheduler();          //¿ªÆôÈÎÎñµ÷¶È
+	vTraceEnable(TRC_START);//start tracealyzer
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+    xTaskCreate((TaskFunction_t )start_task,            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                (const char*    )"start_task",          //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                (uint16_t       )START_STK_SIZE,        //ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡
+                (void*          )NULL,                  //ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
+                (UBaseType_t    )START_TASK_PRIO,       //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
+                (TaskHandle_t*  )&StartTask_Handler);   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½              
+    vTaskStartScheduler();          //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 }
 
-//¿ªÊ¼ÈÎÎñÈÎÎñº¯Êý
+//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void start_task(void *pvParameters)
 {
-    taskENTER_CRITICAL();           //½øÈëÁÙ½çÇø
+    taskENTER_CRITICAL();           //ï¿½ï¿½ï¿½ï¿½ï¿½Ù½ï¿½ï¿½ï¿½
 	
-    //´´½¨ÊÍ·ÅÐÅºÅÁ¿ÈÎÎñ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     xTaskCreate((TaskFunction_t )SemapGive_task,             
                 (const char*    )"semapgive_task",           
                 (uint16_t       )SEMAPGIVE_STK_SIZE,        
                 (void*          )NULL,                  
                 (UBaseType_t    )SEMAPGIVE_TASK_PRIO,        
                 (TaskHandle_t*  )&SemapGiveTask_Handler);   
-    //´´½¨»ñÈ¡ÐÅºÅÁ¿ÈÎÎñ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     xTaskCreate((TaskFunction_t )SemapTake_task,     
                 (const char*    )"semaptake_task",   
                 (uint16_t       )SEMAPTAKE_STK_SIZE,
                 (void*          )NULL,
                 (UBaseType_t    )SEMAPTAKE_TASK_PRIO,
                 (TaskHandle_t*  )&SemapTakeTask_Handler); 
-    vTaskDelete(StartTask_Handler); //É¾³ý¿ªÊ¼ÈÎÎñ
-    taskEXIT_CRITICAL();            //ÍË³öÁÙ½çÇø
+    vTaskDelete(StartTask_Handler); //É¾ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+    taskEXIT_CRITICAL();            //ï¿½Ë³ï¿½ï¿½Ù½ï¿½ï¿½ï¿½
 }
 
-//ÊÍ·Å¼ÆÊýÐÍÐÅºÅÁ¿ÈÎÎñº¯Êý
+//ï¿½Í·Å¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void SemapGive_task(void *pvParameters)
 {
 	u8 key,i=0;
 	while(1)
 	{
-		key=KEY_Scan(0);           	//É¨Ãè°´¼ü
+		key=KEY_Scan(0);           	//É¨ï¿½è°´ï¿½ï¿½
         if(SemapTakeTask_Handler!=NULL)  	
         {
             switch(key)
             {
                 case WKUP_PRES:
-					xTaskNotifyGive(SemapTakeTask_Handler);//·¢ËÍÈÎÎñÍ¨Öª
+					xTaskNotifyGive(SemapTakeTask_Handler);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨Öª
                     break;
             }
         }
@@ -133,23 +135,23 @@ void SemapGive_task(void *pvParameters)
             i=0;
             LED0=!LED0;
         }
-        vTaskDelay(10);     //ÑÓÊ±10ms£¬Ò²¾ÍÊÇ10¸öÊ±ÖÓ½ÚÅÄ	
+        vTaskDelay(10);     //ï¿½ï¿½Ê±10msï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½10ï¿½ï¿½Ê±ï¿½Ó½ï¿½ï¿½ï¿½	
 	}
 }
 
-//»ñÈ¡¼ÆÊýÐÍÐÅºÅÁ¿ÈÎÎñº¯Êý
+//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void SemapTake_task(void *pvParameters)
 {
     u8 num;
     uint32_t NotifyValue;
 	while(1)
 	{
-		NotifyValue=ulTaskNotifyTake(pdFALSE,portMAX_DELAY);//»ñÈ¡ÈÎÎñÍ¨Öª
+		NotifyValue=ulTaskNotifyTake(pdFALSE,portMAX_DELAY);//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Í¨Öª
         num++;
-        LCD_ShowxNum(166,111,NotifyValue-1,3,16,0);         //ÏÔÊ¾µ±Ç°ÈÎÎñÍ¨ÖªÖµ
-		LCD_Fill(6,131,233,313,lcd_discolor[num%14]);   	//Ë¢ÆÁ
+        LCD_ShowxNum(166,111,NotifyValue-1,3,16,0);         //ï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Í¨ÖªÖµ
+		LCD_Fill(6,131,233,313,lcd_discolor[num%14]);   	//Ë¢ï¿½ï¿½
 		LED1=!LED1;
-        vTaskDelay(1000);                               	//ÑÓÊ±1s£¬Ò²¾ÍÊÇ1000¸öÊ±ÖÓ½ÚÅÄ	
+        vTaskDelay(1000);                               	//ï¿½ï¿½Ê±1sï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½1000ï¿½ï¿½Ê±ï¿½Ó½ï¿½ï¿½ï¿½	
 	}
 }
 

@@ -12,57 +12,57 @@
 #include "task.h"
 #include "semphr.h"
 /************************************************
- ALIENTEK Ì½Ë÷ÕßSTM32F407¿ª·¢°å FreeRTOSÊµÑé18-1
- FreeRTOSµÍ¹¦ºÄTicklessÄ£Ê½ÊµÑé-¿âº¯Êý°æ±¾
- ¼¼ÊõÖ§³Ö£ºwww.openedv.com
- ÌÔ±¦µêÆÌ£ºhttp://eboard.taobao.com 
- ¹Ø×¢Î¢ÐÅ¹«ÖÚÆ½Ì¨Î¢ÐÅºÅ£º"ÕýµãÔ­×Ó"£¬Ãâ·Ñ»ñÈ¡STM32×ÊÁÏ¡£
- ¹ãÖÝÊÐÐÇÒíµç×Ó¿Æ¼¼ÓÐÏÞ¹«Ë¾  
- ×÷Õß£ºÕýµãÔ­×Ó @ALIENTEK
+ ALIENTEK Ì½ï¿½ï¿½ï¿½ï¿½STM32F407ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ FreeRTOSÊµï¿½ï¿½18-1
+ FreeRTOSï¿½Í¹ï¿½ï¿½ï¿½TicklessÄ£Ê½Êµï¿½ï¿½-ï¿½âº¯ï¿½ï¿½ï¿½æ±¾
+ ï¿½ï¿½ï¿½ï¿½Ö§ï¿½Ö£ï¿½www.openedv.com
+ ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ì£ï¿½http://eboard.taobao.com 
+ ï¿½ï¿½×¢Î¢ï¿½Å¹ï¿½ï¿½ï¿½Æ½Ì¨Î¢ï¿½ÅºÅ£ï¿½"ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½"ï¿½ï¿½ï¿½ï¿½Ñ»ï¿½È¡STM32ï¿½ï¿½ï¿½Ï¡ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Æ¼ï¿½ï¿½ï¿½ï¿½Þ¹ï¿½Ë¾  
+ ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ @ALIENTEK
 ************************************************/
 
-//ÈÎÎñÓÅÏÈ¼¶
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
 #define START_TASK_PRIO		1
-//ÈÎÎñ¶ÑÕ»´óÐ¡	
+//ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡	
 #define START_STK_SIZE 		256  
-//ÈÎÎñ¾ä±ú
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 TaskHandle_t StartTask_Handler;
-//ÈÎÎñº¯Êý
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void start_task(void *pvParameters);
 
-//ÈÎÎñÓÅÏÈ¼¶
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
 #define TASK1_TASK_PRIO		2
-//ÈÎÎñ¶ÑÕ»´óÐ¡	
+//ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡	
 #define TASK1_STK_SIZE 		256  
-//ÈÎÎñ¾ä±ú
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 TaskHandle_t Task1Task_Handler;
-//ÈÎÎñº¯Êý
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void task1_task(void *pvParameters);
 
-//ÈÎÎñÓÅÏÈ¼¶
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
 #define DATAPROCESS_TASK_PRIO 3
-//ÈÎÎñ¶ÑÕ»´óÐ¡	
+//ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡	
 #define DATAPROCESS_STK_SIZE  256 
-//ÈÎÎñ¾ä±ú
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 TaskHandle_t DataProcess_Handler;
-//ÈÎÎñº¯Êý
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void DataProcess_task(void *pvParameters);
 
-//¶þÖµÐÅºÅÁ¿¾ä±ú
-SemaphoreHandle_t BinarySemaphore;	//¶þÖµÐÅºÅÁ¿¾ä±ú
+//ï¿½ï¿½Öµï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+SemaphoreHandle_t BinarySemaphore;	//ï¿½ï¿½Öµï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-//ÓÃÓÚÃüÁî½âÎöÓÃµÄÃüÁîÖµ
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
 #define LED1ON	1
 #define LED1OFF	2
 #define BEEPON	3
 #define BEEPOFF	4
 #define COMMANDERR	0XFF
 
-//½øÈëµÍ¹¦ºÄÄ£Ê½Ç°ÐèÒª´¦ÀíµÄÊÂÇé
-//ulExpectedIdleTime£ºµÍ¹¦ºÄÄ£Ê½ÔËÐÐÊ±¼ä
+//ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½Ä£Ê½Ç°ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ulExpectedIdleTimeï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 void PreSleepProcessing(uint32_t ulExpectedIdleTime)
 {
-	//¹Ø±ÕÄ³Ð©µÍ¹¦ºÄÄ£Ê½ÏÂ²»Ê¹ÓÃµÄÍâÉèÊ±ÖÓ£¬
+	//ï¿½Ø±ï¿½Ä³Ð©ï¿½Í¹ï¿½ï¿½ï¿½Ä£Ê½ï¿½Â²ï¿½Ê¹ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ó£ï¿½
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, DISABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, DISABLE);	
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, DISABLE);	
@@ -72,11 +72,11 @@ void PreSleepProcessing(uint32_t ulExpectedIdleTime)
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOH, DISABLE);	  
 }
 
-//ÍË³öµÍ¹¦ºÄÄ£Ê½ÒÔºóÐèÒª´¦ÀíµÄÊÂÇé
-//ulExpectedIdleTime£ºµÍ¹¦ºÄÄ£Ê½ÔËÐÐÊ±¼ä
+//ï¿½Ë³ï¿½ï¿½Í¹ï¿½ï¿½ï¿½Ä£Ê½ï¿½Ôºï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ulExpectedIdleTimeï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 void PostSleepProcessing(uint32_t ulExpectedIdleTime)
 {
-	//ÍË³öµÍ¹¦ºÄÄ£Ê½ÒÔºó´ò¿ªÄÇÐ©±»¹Ø±ÕµÄÍâÉèÊ±ÖÓ
+	//ï¿½Ë³ï¿½ï¿½Í¹ï¿½ï¿½ï¿½Ä£Ê½ï¿½Ôºï¿½ï¿½ï¿½ï¿½Ð©ï¿½ï¿½ï¿½Ø±Õµï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);	
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);	
@@ -86,22 +86,22 @@ void PostSleepProcessing(uint32_t ulExpectedIdleTime)
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOH, ENABLE);	              
 }
 
-//½«×Ö·û´®ÖÐµÄÐ¡Ð´×ÖÄ¸×ª»»Îª´óÐ´
-//str:Òª×ª»»µÄ×Ö·û´®
-//len£º×Ö·û´®³¤¶È
+//ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ð¡Ð´ï¿½ï¿½Ä¸×ªï¿½ï¿½Îªï¿½ï¿½Ð´
+//str:Òª×ªï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
+//lenï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void LowerToCap(u8 *str,u8 len)
 {
 	u8 i;
 	for(i=0;i<len;i++)
 	{
-		if((96<str[i])&&(str[i]<123))	//Ð¡Ð´×ÖÄ¸
-		str[i]=str[i]-32;				//×ª»»Îª´óÐ´
+		if((96<str[i])&&(str[i]<123))	//Ð¡Ð´ï¿½ï¿½Ä¸
+		str[i]=str[i]-32;				//×ªï¿½ï¿½Îªï¿½ï¿½Ð´
 	}
 }
 
-//ÃüÁî´¦Àíº¯Êý£¬½«×Ö·û´®ÃüÁî×ª»»³ÉÃüÁîÖµ
-//str£ºÃüÁî
-//·µ»ØÖµ: 0XFF£¬ÃüÁî´íÎó£»ÆäËûÖµ£¬ÃüÁîÖµ
+//ï¿½ï¿½ï¿½î´¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+//strï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½Öµ: 0XFFï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
 u8 CommandProcess(u8 *str)
 {
 	u8 CommandValue=COMMANDERR;
@@ -114,60 +114,62 @@ u8 CommandProcess(u8 *str)
 
 int main(void)
 { 
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);//ÉèÖÃÏµÍ³ÖÐ¶ÏÓÅÏÈ¼¶·Ö×é4
-	delay_init(168);					//³õÊ¼»¯ÑÓÊ±º¯Êý
-	uart_init(115200);     				//³õÊ¼»¯´®¿Ú
-	LED_Init();		        			//³õÊ¼»¯LED¶Ë¿Ú
-	KEY_Init();							//³õÊ¼»¯°´¼ü
-	BEEP_Init();						//³õÊ¼»¯·äÃùÆ÷
-	my_mem_init(SRAMIN);            	//³õÊ¼»¯ÄÚ²¿ÄÚ´æ³Ø
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);//ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½ï¿½ï¿½4
+	delay_init(168);					//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
+	uart_init(115200);     				//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	LED_Init();		        			//ï¿½ï¿½Ê¼ï¿½ï¿½LEDï¿½Ë¿ï¿½
+	KEY_Init();							//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	BEEP_Init();						//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	my_mem_init(SRAMIN);            	//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ú²ï¿½ï¿½Ú´ï¿½ï¿½
     
-	//´´½¨¿ªÊ¼ÈÎÎñ
-    xTaskCreate((TaskFunction_t )start_task,            //ÈÎÎñº¯Êý
-                (const char*    )"start_task",          //ÈÎÎñÃû³Æ
-                (uint16_t       )START_STK_SIZE,        //ÈÎÎñ¶ÑÕ»´óÐ¡
-                (void*          )NULL,                  //´«µÝ¸øÈÎÎñº¯ÊýµÄ²ÎÊý
-                (UBaseType_t    )START_TASK_PRIO,       //ÈÎÎñÓÅÏÈ¼¶
-                (TaskHandle_t*  )&StartTask_Handler);   //ÈÎÎñ¾ä±ú              
-    vTaskStartScheduler();          //¿ªÆôÈÎÎñµ÷¶È
+	vTraceEnable(TRC_START);//start tracealyzer
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+    xTaskCreate((TaskFunction_t )start_task,            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                (const char*    )"start_task",          //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                (uint16_t       )START_STK_SIZE,        //ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ð¡
+                (void*          )NULL,                  //ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
+                (UBaseType_t    )START_TASK_PRIO,       //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
+                (TaskHandle_t*  )&StartTask_Handler);   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½              
+    vTaskStartScheduler();          //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 }
 
-//¿ªÊ¼ÈÎÎñÈÎÎñº¯Êý
+//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void start_task(void *pvParameters)
 {
-    taskENTER_CRITICAL();           //½øÈëÁÙ½çÇø
+    taskENTER_CRITICAL();           //ï¿½ï¿½ï¿½ï¿½ï¿½Ù½ï¿½ï¿½ï¿½
 	
-	//´´½¨¶þÖµÐÅºÅÁ¿
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Åºï¿½ï¿½ï¿½
 	BinarySemaphore=xSemaphoreCreateBinary();	
-    //´´½¨TASK1ÈÎÎñ
+    //ï¿½ï¿½ï¿½ï¿½TASK1ï¿½ï¿½ï¿½ï¿½
     xTaskCreate((TaskFunction_t )task1_task,             
                 (const char*    )"task1_task",           
                 (uint16_t       )TASK1_STK_SIZE,        
                 (void*          )NULL,                  
                 (UBaseType_t    )TASK1_TASK_PRIO,        
                 (TaskHandle_t*  )&Task1Task_Handler);   
-    //´´½¨TASK2ÈÎÎñ
+    //ï¿½ï¿½ï¿½ï¿½TASK2ï¿½ï¿½ï¿½ï¿½
     xTaskCreate((TaskFunction_t )DataProcess_task,     
                 (const char*    )"keyprocess_task",   
                 (uint16_t       )DATAPROCESS_STK_SIZE,
                 (void*          )NULL,
                 (UBaseType_t    )DATAPROCESS_TASK_PRIO,
                 (TaskHandle_t*  )&DataProcess_Handler); 
-    vTaskDelete(StartTask_Handler); //É¾³ý¿ªÊ¼ÈÎÎñ
-    taskEXIT_CRITICAL();            //ÍË³öÁÙ½çÇø
+    vTaskDelete(StartTask_Handler); //É¾ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+    taskEXIT_CRITICAL();            //ï¿½Ë³ï¿½ï¿½Ù½ï¿½ï¿½ï¿½
 }
 
-//task1ÈÎÎñº¯Êý
+//task1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void task1_task(void *pvParameters)
 {
 	while(1)
 	{
 		LED0=!LED0;
-        vTaskDelay(500);             	//ÑÓÊ±500ms£¬Ò²¾ÍÊÇ500¸öÊ±ÖÓ½ÚÅÄ	
+        vTaskDelay(500);             	//ï¿½ï¿½Ê±500msï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½500ï¿½ï¿½Ê±ï¿½Ó½ï¿½ï¿½ï¿½	
 	}
 }
 
-//DataProcess_taskº¯Êý
+//DataProcess_taskï¿½ï¿½ï¿½ï¿½
 void DataProcess_task(void *pvParameters)
 {
 	u8 len=0;
@@ -177,19 +179,19 @@ void DataProcess_task(void *pvParameters)
 	u8 *CommandStr;
 	while(1)
 	{
-		err=xSemaphoreTake(BinarySemaphore,portMAX_DELAY);	//»ñÈ¡ÐÅºÅÁ¿
-		if(err==pdTRUE)										//»ñÈ¡ÐÅºÅÁ¿³É¹¦
+		err=xSemaphoreTake(BinarySemaphore,portMAX_DELAY);	//ï¿½ï¿½È¡ï¿½Åºï¿½ï¿½ï¿½
+		if(err==pdTRUE)										//ï¿½ï¿½È¡ï¿½Åºï¿½ï¿½ï¿½ï¿½É¹ï¿½
 		{
-			len=USART_RX_STA&0x3fff;						//µÃµ½´Ë´Î½ÓÊÕµ½µÄÊý¾Ý³¤¶È
-			CommandStr=mymalloc(SRAMIN,len+1);				//ÉêÇëÄÚ´æ
+			len=USART_RX_STA&0x3fff;						//ï¿½Ãµï¿½ï¿½Ë´Î½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
+			CommandStr=mymalloc(SRAMIN,len+1);				//ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½
 			sprintf((char*)CommandStr,"%s",USART_RX_BUF);
-			CommandStr[len]='\0';							//¼ÓÉÏ×Ö·û´®½áÎ²·ûºÅ
-			LowerToCap(CommandStr,len);						//½«×Ö·û´®×ª»»Îª´óÐ´		
-			CommandValue=CommandProcess(CommandStr);		//ÃüÁî½âÎö
+			CommandStr[len]='\0';							//ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½
+			LowerToCap(CommandStr,len);						//ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½×ªï¿½ï¿½Îªï¿½ï¿½Ð´		
+			CommandValue=CommandProcess(CommandStr);		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			if(CommandValue!=COMMANDERR)
 			{
-				printf("ÃüÁîÎª:%s\r\n",CommandStr);
-				switch(CommandValue)						//´¦ÀíÃüÁî
+				printf("ï¿½ï¿½ï¿½ï¿½Îª:%s\r\n",CommandStr);
+				switch(CommandValue)						//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				{
 					case LED1ON: 
 						LED1=0;
@@ -207,11 +209,11 @@ void DataProcess_task(void *pvParameters)
 			}
 			else
 			{
-				printf("ÎÞÐ§µÄÃüÁî£¬ÇëÖØÐÂÊäÈë!!\r\n");
+				printf("ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½î£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!!\r\n");
 			}
 			USART_RX_STA=0;
-			memset(USART_RX_BUF,0,USART_REC_LEN);			//´®¿Ú½ÓÊÕ»º³åÇøÇåÁã
-			myfree(SRAMIN,CommandStr);						//ÊÍ·ÅÄÚ´æ
+			memset(USART_RX_BUF,0,USART_REC_LEN);			//ï¿½ï¿½ï¿½Ú½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			myfree(SRAMIN,CommandStr);						//ï¿½Í·ï¿½ï¿½Ú´ï¿½
 		}
 	}
 }

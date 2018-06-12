@@ -12,55 +12,55 @@
 #include "task.h"
 #include "semphr.h"
 /************************************************
- ALIENTEK л╫кВуъSTM32F407©╙╥╒╟Е FreeRTOSй╣яИ14-3
- FreeRTOSсеох╪╤╥╜в╙й╣яИ-HAL©Б╟Ф╠╬
- ╪╪йУж╖Ёжё╨www.openedv.com
- лт╠╕╣Йфлё╨http://eboard.taobao.com 
- ╧ьв╒н╒пе╧╚жзф╫л╗н╒пе╨её╨"уЩ╣Цт╜вс"ё╛цБ╥я╩Ях║STM32вйао║ё
- ╧ЦжщйппгрМ╣Гвс©ф╪╪споч╧╚к╬  
- вВуъё╨уЩ╣Цт╜вс @ALIENTEK
+ ALIENTEK л╫О©╫О©╫О©╫О©╫STM32F407О©╫О©╫О©╫О©╫О©╫О©╫ FreeRTOSй╣О©╫О©╫14-3
+ FreeRTOSО©╫О©╫О©╫х╪О©╫О©╫О©╫в╙й╣О©╫О©╫-HALО©╫О©╫Ф╠╬
+ О©╫О©╫О©╫О©╫ж╖О©╫жёО©╫www.openedv.com
+ О©╫т╠О©╫О©╫О©╫О©╫лёО©╫http://eboard.taobao.com 
+ О©╫О©╫в╒н╒О©╫е╧О©╫О©╫О©╫ф╫л╗н╒О©╫е╨еёО©╫"О©╫О©╫О©╫О©╫т╜О©╫О©╫"О©╫О©╫О©╫О©╫я╩О©╫х║STM32О©╫О©╫О©╫о║О©╫
+ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫с©ф╪О©╫О©╫О©╫О©╫ч╧О©╫к╬  
+ О©╫О©╫О©╫ъёО©╫О©╫О©╫О©╫О©╫т╜О©╫О©╫ @ALIENTEK
 ************************************************/
 
-//хннЯсеох╪╤
+//О©╫О©╫О©╫О©╫О©╫О©╫О©╫х╪О©╫
 #define START_TASK_PRIO			1
-//хннЯ╤яу╩╢Сп║	
+//О©╫О©╫О©╫О©╫О©╫у╩О©╫О©╫п║	
 #define START_STK_SIZE 			256  
-//хннЯ╬Д╠З
+//О©╫О©╫О©╫О©╫О©╫О©╫
 TaskHandle_t StartTask_Handler;
-//хннЯ╨╞йЩ
+//О©╫О©╫О©╫О©╫О©╫О©╫
 void start_task(void *pvParameters);
 
-//хннЯсеох╪╤
+//О©╫О©╫О©╫О©╫О©╫О©╫О©╫х╪О©╫
 #define LOW_TASK_PRIO			2
-//хннЯ╤яу╩╢Сп║	
+//О©╫О©╫О©╫О©╫О©╫у╩О©╫О©╫п║	
 #define LOW_STK_SIZE 			256  
-//хннЯ╬Д╠З
+//О©╫О©╫О©╫О©╫О©╫О©╫
 TaskHandle_t LowTask_Handler;
-//хннЯ╨╞йЩ
+//О©╫О©╫О©╫О©╫О©╫О©╫
 void low_task(void *pvParameters);
 
-//хннЯсеох╪╤
+//О©╫О©╫О©╫О©╫О©╫О©╫О©╫х╪О©╫
 #define MIDDLE_TASK_PRIO 		3
-//хннЯ╤яу╩╢Сп║	
+//О©╫О©╫О©╫О©╫О©╫у╩О©╫О©╫п║	
 #define MIDDLE_STK_SIZE  		256 
-//хннЯ╬Д╠З
+//О©╫О©╫О©╫О©╫О©╫О©╫
 TaskHandle_t MiddleTask_Handler;
-//хннЯ╨╞йЩ
+//О©╫О©╫О©╫О©╫О©╫О©╫
 void middle_task(void *pvParameters);
 
-//хннЯсеох╪╤
+//О©╫О©╫О©╫О©╫О©╫О©╫О©╫х╪О©╫
 #define HIGH_TASK_PRIO 			4
-//хннЯ╤яу╩╢Сп║	
+//О©╫О©╫О©╫О©╫О©╫у╩О©╫О©╫п║	
 #define HIGH_STK_SIZE  			256 
-//хннЯ╬Д╠З
+//О©╫О©╫О©╫О©╫О©╫О©╫
 TaskHandle_t HighTask_Handler;
-//хннЯ╨╞йЩ
+//О©╫О©╫О©╫О©╫О©╫О©╫
 void high_task(void *pvParameters);
 
-//╤Чж╣пе╨еа©╬Д╠З
-SemaphoreHandle_t BinarySemaphore;	//╤Чж╣пе╨еа©
+//О©╫О©╫ж╣О©╫е╨О©╫О©╫О©╫О©╫О©╫О©╫
+SemaphoreHandle_t BinarySemaphore;	//О©╫О©╫ж╣О©╫е╨О©╫О©╫О©╫
 
-//LCDк╒фай╠й╧сц╣дяуи╚
+//LCDк╒О©╫О©╫й╠й╧О©╫ц╣О©╫О©╫О©╫и╚
 int lcd_discolor[14]={	WHITE, BLACK, BLUE,  BRED,      
 						GRED,  GBLUE, RED,   MAGENTA,       	 
 						GREEN, CYAN,  YELLOW,BROWN, 			
@@ -68,14 +68,14 @@ int lcd_discolor[14]={	WHITE, BLACK, BLUE,  BRED,
 
 int main(void)
 { 
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);//иХжцо╣мЁжп╤осеох╪╤╥жвИ4
-	delay_init(168);					//ЁУй╪╩╞ясй╠╨╞йЩ
-	uart_init(115200);     				//ЁУй╪╩╞╢╝©з
-	LED_Init();		        			//ЁУй╪╩╞LED╤к©з
-	KEY_Init();							//ЁУй╪╩╞╟╢╪Э
-	BEEP_Init();						//ЁУй╪╩╞╥ДцЫфВ
-	LCD_Init();							//ЁУй╪╩╞LCD
-	my_mem_init(SRAMIN);            	//ЁУй╪╩╞дз╡©дз╢ФЁь
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);//О©╫О©╫О©╫О©╫о╣мЁО©╫п╤О©╫О©╫О©╫О©╫х╪О©╫О©╫О©╫О©╫О©╫4
+	delay_init(168);					//О©╫О©╫й╪О©╫О©╫О©╫О©╫й╠О©╫О©╫О©╫О©╫
+	uart_init(115200);     				//О©╫О©╫й╪О©╫О©╫О©╫О©╫О©╫О©╫
+	LED_Init();		        			//О©╫О©╫й╪О©╫О©╫LEDО©╫к©О©╫
+	KEY_Init();							//О©╫О©╫й╪О©╫О©╫О©╫О©╫О©╫О©╫
+	BEEP_Init();						//О©╫О©╫й╪О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	LCD_Init();							//О©╫О©╫й╪О©╫О©╫LCD
+	my_mem_init(SRAMIN);            	//О©╫О©╫й╪О©╫О©╫О©╫з╡О©╫О©╫з╢О©╫О©╫
     
     POINT_COLOR = RED;
 	LCD_ShowString(30,10,200,16,16,"ATK STM32F103/407");	
@@ -84,111 +84,113 @@ int main(void)
 	LCD_ShowString(30,70,200,16,16,"ATOM@ALIENTEK");
 	LCD_ShowString(30,90,200,16,16,"2016/11/25");
 	
-	//╢╢╫╗©╙й╪хннЯ
-    xTaskCreate((TaskFunction_t )start_task,            //хннЯ╨╞йЩ
-                (const char*    )"start_task",          //хннЯцШЁф
-                (uint16_t       )START_STK_SIZE,        //хннЯ╤яу╩╢Сп║
-                (void*          )NULL,                  //╢╚╣щ╦ЬхннЯ╨╞йЩ╣д╡нйЩ
-                (UBaseType_t    )START_TASK_PRIO,       //хннЯсеох╪╤
-                (TaskHandle_t*  )&StartTask_Handler);   //хннЯ╬Д╠З              
-    vTaskStartScheduler();          //©╙фТхннЯ╣В╤х
+	vTraceEnable(TRC_START);//start tracealyzer
+
+	//О©╫О©╫О©╫О©╫О©╫О©╫й╪О©╫О©╫О©╫О©╫
+    xTaskCreate((TaskFunction_t )start_task,            //О©╫О©╫О©╫О©╫О©╫О©╫
+                (const char*    )"start_task",          //О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+                (uint16_t       )START_STK_SIZE,        //О©╫О©╫О©╫О©╫О©╫у╩О©╫О©╫п║
+                (void*          )NULL,                  //О©╫О©╫О©╫щ╦О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╡О©╫О©╫О©╫
+                (UBaseType_t    )START_TASK_PRIO,       //О©╫О©╫О©╫О©╫О©╫О©╫О©╫х╪О©╫
+                (TaskHandle_t*  )&StartTask_Handler);   //О©╫О©╫О©╫О©╫О©╫О©╫              
+    vTaskStartScheduler();          //О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 }
 
-//©╙й╪хннЯхннЯ╨╞йЩ
+//О©╫О©╫й╪О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 void start_task(void *pvParameters)
 {
-    taskENTER_CRITICAL();           //╫ЬхКаы╫ГгЬ
+    taskENTER_CRITICAL();           //О©╫О©╫О©╫О©╫О©╫ы╫О©╫О©╫О©╫
 	
-	//╢╢╫╗╤Чж╣пе╨еа©
+	//О©╫О©╫О©╫О©╫О©╫О©╫ж╣О©╫е╨О©╫О©╫О©╫
 	BinarySemaphore=xSemaphoreCreateBinary();
-	//╤Чж╣пе╨еа©╢╢╫╗Ёи╧╕рт╨Ср╙охйм╥ер╩об
+	//О©╫О©╫ж╣О©╫е╨О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫и╧О©╫О©╫т╨О©╫р╙О©╫О©╫О©╫м╥О©╫р╩О©╫О©╫
 	if(BinarySemaphore!=NULL)xSemaphoreGive(BinarySemaphore);	
 	
-    //╢╢╫╗╦ъсеох╪╤хннЯ
+    //О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫х╪О©╫О©╫О©╫О©╫О©╫
     xTaskCreate((TaskFunction_t )high_task,             
                 (const char*    )"high_task",           
                 (uint16_t       )HIGH_STK_SIZE,        
                 (void*          )NULL,                  
                 (UBaseType_t    )HIGH_TASK_PRIO,        
                 (TaskHandle_t*  )&HighTask_Handler);   
-    //╢╢╫╗жп╣хсеох╪╤хннЯ
+    //О©╫О©╫О©╫О©╫О©╫п╣О©╫О©╫О©╫О©╫х╪О©╫О©╫О©╫О©╫О©╫
     xTaskCreate((TaskFunction_t )middle_task,     
                 (const char*    )"middle_task",   
                 (uint16_t       )MIDDLE_STK_SIZE,
                 (void*          )NULL,
                 (UBaseType_t    )MIDDLE_TASK_PRIO,
                 (TaskHandle_t*  )&MiddleTask_Handler); 
-	//╢╢╫╗╣мсеох╪╤хннЯ
+	//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫х╪О©╫О©╫О©╫О©╫О©╫
     xTaskCreate((TaskFunction_t )low_task,     
                 (const char*    )"low_task",   
                 (uint16_t       )LOW_STK_SIZE,
                 (void*          )NULL,
                 (UBaseType_t    )LOW_TASK_PRIO,
                 (TaskHandle_t*  )&LowTask_Handler);
-    vTaskDelete(StartTask_Handler); //и╬ЁЩ©╙й╪хннЯ
-    taskEXIT_CRITICAL();            //мкЁЖаы╫ГгЬ
+    vTaskDelete(StartTask_Handler); //и╬О©╫О©╫О©╫О©╫й╪О©╫О©╫О©╫О©╫
+    taskEXIT_CRITICAL();            //О©╫кЁО©╫О©╫ы╫О©╫О©╫О©╫
 }
 
-//╦ъсеох╪╤хннЯ╣дхннЯ╨╞йЩ
+//О©╫О©╫О©╫О©╫О©╫х╪О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 void high_task(void *pvParameters)
 {
 	u8 num;
 	
 	POINT_COLOR = BLACK;
-	LCD_DrawRectangle(5,110,115,314); 	//╩╜р╩╦Ж╬ьпн	
-	LCD_DrawLine(5,130,115,130);		//╩╜оъ
+	LCD_DrawRectangle(5,110,115,314); 	//О©╫О©╫р╩О©╫О©╫О©╫О©╫О©╫О©╫	
+	LCD_DrawLine(5,130,115,130);		//О©╫О©╫О©╫О©╫
 	POINT_COLOR = BLUE;
 	LCD_ShowString(6,111,110,16,16,"High Task");
 	
 	while(1)
 	{
-		vTaskDelay(500);	//ясй╠500msё╛р╡╬мйг500╦Жй╠жс╫зед	
+		vTaskDelay(500);	//О©╫О©╫й╠500msО©╫О©╫р╡О©╫О©╫О©╫О©╫500О©╫О©╫й╠О©╫с╫О©╫О©╫О©╫	
 		num++;
 		printf("high task Pend Sem\r\n");
-		xSemaphoreTake(BinarySemaphore,portMAX_DELAY);	//╩Ях║╤Чж╣пе╨еа©
+		xSemaphoreTake(BinarySemaphore,portMAX_DELAY);	//О©╫О©╫х║О©╫О©╫ж╣О©╫е╨О©╫О©╫О©╫
 		printf("high task Running!\r\n");
-		LCD_Fill(6,131,114,313,lcd_discolor[num%14]); 	//лНЁДгЬсР
+		LCD_Fill(6,131,114,313,lcd_discolor[num%14]); 	//О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 		LED1=!LED1;
-		xSemaphoreGive(BinarySemaphore);				//йм╥епе╨еа©
-		vTaskDelay(500);	//ясй╠500msё╛р╡╬мйг500╦Жй╠жс╫зед  
+		xSemaphoreGive(BinarySemaphore);				//О©╫м╥О©╫О©╫е╨О©╫О©╫О©╫
+		vTaskDelay(500);	//О©╫О©╫й╠500msО©╫О©╫р╡О©╫О©╫О©╫О©╫500О©╫О©╫й╠О©╫с╫О©╫О©╫О©╫  
 	}
 }
 
-//жп╣хсеох╪╤хннЯ╣дхннЯ╨╞йЩ
+//О©╫п╣О©╫О©╫О©╫О©╫х╪О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 void middle_task(void *pvParameters)
 {
 	u8 num;
 	
 	POINT_COLOR = BLACK;
-	LCD_DrawRectangle(125,110,234,314); //╩╜р╩╦Ж╬ьпн	
-	LCD_DrawLine(125,130,234,130);		//╩╜оъ
+	LCD_DrawRectangle(125,110,234,314); //О©╫О©╫р╩О©╫О©╫О©╫О©╫О©╫О©╫	
+	LCD_DrawLine(125,130,234,130);		//О©╫О©╫О©╫О©╫
 	POINT_COLOR = BLUE;
 	LCD_ShowString(126,111,110,16,16,"Middle Task");
 	while(1)
 	{
 		num++;
 		printf("middle task Running!\r\n");
-		LCD_Fill(126,131,233,313,lcd_discolor[13-num%14]); //лНЁДгЬсР
+		LCD_Fill(126,131,233,313,lcd_discolor[13-num%14]); //О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 		LED0=!LED0;
-        vTaskDelay(1000);	//ясй╠1sё╛р╡╬мйг1000╦Жй╠жс╫зед	
+        vTaskDelay(1000);	//О©╫О©╫й╠1sО©╫О©╫р╡О©╫О©╫О©╫О©╫1000О©╫О©╫й╠О©╫с╫О©╫О©╫О©╫	
 	}
 }
 
-//╣мсеох╪╤хннЯ╣дхннЯ╨╞йЩ
+//О©╫О©╫О©╫О©╫О©╫х╪О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 void low_task(void *pvParameters)
 {
 	static u32 times;
 
 	while(1)
 	{
-		xSemaphoreTake(BinarySemaphore,portMAX_DELAY);	//╩Ях║╤Чж╣пе╨еа©
+		xSemaphoreTake(BinarySemaphore,portMAX_DELAY);	//О©╫О©╫х║О©╫О©╫ж╣О©╫е╨О©╫О©╫О©╫
 		printf("low task Running!\r\n");
-		for(times=0;times<20000000;times++)				//дёдБ╣мсеох╪╤хннЯу╪сц╤Чж╣пе╨еа©
+		for(times=0;times<20000000;times++)				//дёО©╫О©╫О©╫О©╫О©╫О©╫х╪О©╫О©╫О©╫О©╫О©╫у╪О©╫ц╤О©╫ж╣О©╫е╨О©╫О©╫О©╫
 		{
-			taskYIELD();								//╥╒фПхннЯ╣В╤х
+			taskYIELD();								//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 		}
-		xSemaphoreGive(BinarySemaphore);				//йм╥е╤Чж╣пе╨еа©
-		vTaskDelay(1000);	//ясй╠1sё╛р╡╬мйг1000╦Жй╠жс╫зед	
+		xSemaphoreGive(BinarySemaphore);				//О©╫м╥е╤О©╫ж╣О©╫е╨О©╫О©╫О©╫
+		vTaskDelay(1000);	//О©╫О©╫й╠1sО©╫О©╫р╡О©╫О©╫О©╫О©╫1000О©╫О©╫й╠О©╫с╫О©╫О©╫О©╫	
 	}
 }
 

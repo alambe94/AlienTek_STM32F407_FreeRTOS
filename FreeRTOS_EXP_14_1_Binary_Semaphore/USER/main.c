@@ -94,13 +94,15 @@ int main(void)
 	BEEP_Init();						//��ʼ��������
 	LCD_Init();							//��ʼ��LCD
 	my_mem_init(SRAMIN);            	//��ʼ���ڲ��ڴ��
-    
+
 	POINT_COLOR=RED;
    	LCD_ShowString(10,10,200,16,16,"ATK STM32F103/407");	
 	LCD_ShowString(10,30,200,16,16,"FreeRTOS Examp 14-1");
 	LCD_ShowString(10,50,200,16,16,"Binary Semap");
 	LCD_ShowString(10,70,200,16,16,"Command data:");
 	
+	vTraceEnable(TRC_START);//start tracealyzer
+
 	//������ʼ����
     xTaskCreate((TaskFunction_t )start_task,            //������
                 (const char*    )"start_task",          //��������

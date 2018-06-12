@@ -136,6 +136,8 @@ int main(void)
 	BEEP_Init();						//��ʼ��������
 	my_mem_init(SRAMIN);            	//��ʼ���ڲ��ڴ��
     
+	vTraceEnable(TRC_START);//start tracealyzer
+
 	//������ʼ����
     xTaskCreate((TaskFunction_t )start_task,            //������
                 (const char*    )"start_task",          //��������

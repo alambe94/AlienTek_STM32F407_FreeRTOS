@@ -63,6 +63,8 @@ int main(void)
 	LCD_ShowString(30,70,200,16,16,"ATOM@ALIENTEK");
 	LCD_ShowString(30,90,200,16,16,"2016/11/25");
 	
+	vTraceEnable(TRC_START);//start tracealyzer
+
 	//������ʼ����
     xTaskCreate((TaskFunction_t )start_task,            //������
                 (const char*    )"start_task",          //��������

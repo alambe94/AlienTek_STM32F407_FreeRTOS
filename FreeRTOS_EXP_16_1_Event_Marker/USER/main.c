@@ -96,7 +96,8 @@ int main(void)
 	POINT_COLOR = BLUE;
 	LCD_ShowString(30,110,220,16,16,"Event Group Value:0");
 	
-	
+	vTraceEnable(TRC_START);//start tracealyzer
+
 	//������ʼ����
     xTaskCreate((TaskFunction_t )start_task,            //������
                 (const char*    )"start_task",          //��������

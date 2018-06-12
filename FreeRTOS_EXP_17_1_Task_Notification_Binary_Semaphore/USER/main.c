@@ -98,6 +98,8 @@ int main(void)
 	LCD_ShowString(10,50,200,16,16,"Task Notify Bina Sem");
 	LCD_ShowString(10,70,200,16,16,"Command data:");
 	
+	vTraceEnable(TRC_START);//start tracealyzer
+
 	//������ʼ����
     xTaskCreate((TaskFunction_t )start_task,            //������
                 (const char*    )"start_task",          //��������
